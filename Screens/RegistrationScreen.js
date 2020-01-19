@@ -1,11 +1,16 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import { Dimensions } from 'react-native';
+import ButtonAction from './../src/components/ButtonAction';
 
 const ScreenHeight = Dimensions.get("window").height;
 const ScreenWidth = Dimensions.get("window").width;
 
 const RegistrationScreen = () => {
+
+  const onRegisterClick = () => {
+    alert("henlo");
+  }
 
   return (
     <FlexedCenter>
@@ -19,7 +24,10 @@ const RegistrationScreen = () => {
           <Input
             placeholder="Пароль"
           />
-          
+          <ButtonAction 
+            text="Зарегистрироваться"
+            onPress={() => onRegisterClick()}
+          />
         </RegistrationForm>
       </AppContainer>
     </FlexedCenter>
@@ -35,6 +43,7 @@ const FlexedCenter = styled.View`
 `
 const AppContainer = styled.View`
   width: ${ScreenWidth-40}px;
+  margin-top: -100px;
 `
 const AppLogo = styled.Text`
   font-size: 32px;
