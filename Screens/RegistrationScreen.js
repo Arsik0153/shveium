@@ -1,34 +1,82 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { Dimensions } from 'react-native';
 import ButtonAction from './../src/components/ButtonAction';
+import Link from '../src/components/Link';
 
 const ScreenHeight = Dimensions.get("window").height;
 const ScreenWidth = Dimensions.get("window").width;
 
 const RegistrationScreen = () => {
 
+  const [ email, setEmail ] = useState('');
+  const [ password, setPassword ] = useState('');
+  const [ isRegister, setIsRegister ] = useState(true);
+
   const onRegisterClick = () => {
-    alert("henlo");
+    alert(email + " " + password);
   }
+
+  /*useEffect(() => {
+    console.log(registerFormEmail);
+  }, [registerFormEmail]);*/
 
   return (
     <FlexedCenter>
       <AppContainer>
         <AppLogo>Switcher</AppLogo>
-        <SectionDescription>Регистрация</SectionDescription>
-        <RegistrationForm>
-          <Input
-            placeholder="E-mail"
-          />
-          <Input
-            placeholder="Пароль"
-          />
-          <ButtonAction 
-            text="Зарегистрироваться"
-            onPress={() => onRegisterClick()}
-          />
-        </RegistrationForm>
+        {isRegister ? (
+          <>
+          <SectionDescription>Регистрация</SectionDescription>
+          <RegistrationForm>
+            <Input
+              placeholder="E-mail"
+              onChangeText={text => setEmail(text)}
+              value={email}
+            />
+            <Input
+              placeholder="Пароль"
+              onChangeText={text => setPassword(text)}
+              value={password}
+              secureTextEntry={true}
+            />
+            <ButtonAction 
+              text="Зарегистрироваться"
+              onPress={() => onRegisterClick()}
+            />
+            <AlreadyLogged>
+              Уже зарегистрированы? {"\n"}
+              <Link text="Войти" onPress={() => {setIsRegister(!isRegister)}}/>
+            </AlreadyLogged>
+          </RegistrationForm>
+          </>
+        ) : (
+          <>
+          <SectionDescription>Авторизация</SectionDescription>
+          <RegistrationForm>
+            <Input
+              placeholder="E-mail"
+              onChangeText={text => setEmail(text)}
+              value={email}
+            />
+            <Input
+              placeholder="Пароль"
+              onChangeText={text => setPassword(text)}
+              value={password}
+              secureTextEntry={true}
+            />
+            <ButtonAction 
+              text="Авторизоваться"
+              onPress={() => onRegisterClick()}
+            />
+            <AlreadyLogged>
+              Еще не зарегистрированы? {"\n"}
+              <Link text="Зарегистрироваться" onPress={() => {setIsRegister(!isRegister)}}/>
+            </AlreadyLogged>
+          </RegistrationForm>
+          </>
+        )}
+        
       </AppContainer>
     </FlexedCenter>
   );
@@ -71,6 +119,12 @@ const Input = styled.TextInput`
 `
 const Button = styled.Button`
   
+`
+const AlreadyLogged = styled.Text`
+  font-size: 12px;
+  text-align: center;
+  margin-top: 15px;
+  line-height:18px;
 `
 
 export default RegistrationScreen
