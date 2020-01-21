@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
-import { Dimensions } from 'react-native';
+import { Dimensions, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import ButtonAction from './../src/components/ButtonAction';
 import Link from '../src/components/Link';
 
 const ScreenHeight = Dimensions.get("window").height;
 const ScreenWidth = Dimensions.get("window").width;
 
-const RegistrationScreen = () => {
+const RegistrationScreen = (props) => {
 
   const [ email, setEmail ] = useState('');
   const [ password, setPassword ] = useState('');
   const [ isRegister, setIsRegister ] = useState(true);
 
   const onRegisterClick = () => {
-    alert(email + " " + password);
+    props.navigation.navigate("Home");
   }
 
   /*useEffect(() => {
@@ -22,6 +22,7 @@ const RegistrationScreen = () => {
   }, [registerFormEmail]);*/
 
   return (
+    <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
     <FlexedCenter>
       <AppContainer>
         <AppLogo>Switcher</AppLogo>
@@ -57,6 +58,7 @@ const RegistrationScreen = () => {
             <Input
               placeholder="E-mail"
               onChangeText={text => setEmail(text)}
+              keyboardType="email-address"
               value={email}
             />
             <Input
@@ -79,6 +81,7 @@ const RegistrationScreen = () => {
         
       </AppContainer>
     </FlexedCenter>
+    </TouchableWithoutFeedback>
   );
 }
 

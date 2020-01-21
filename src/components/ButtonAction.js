@@ -6,6 +6,7 @@ const ButtonAction = (props) => {
         <ButtonContainer 
             background={props.background}
             onPress={props.onPress}
+            customStyles={props.customStyles}
         >
             <ButtonText>{props.text && props.text}</ButtonText>
         </ButtonContainer>
@@ -16,6 +17,7 @@ const ButtonContainer = styled.TouchableOpacity`
     background: ${props => props.background || "#0983FE"};
     border-radius: 5px;
     padding: 14px;
+    ${props => props.customStyles}
 `
 const ButtonText = styled.Text`
     font-weight: bold;
