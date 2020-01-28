@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
-import { Dimensions, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { Dimensions, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import ButtonAction from './../src/components/ButtonAction';
+import { Feather } from '@expo/vector-icons';
+import * as firebase from 'firebase';
 
 const ScreenHeight = Dimensions.get("window").height;
 const ScreenWidth = Dimensions.get("window").width;
@@ -15,10 +17,35 @@ const HomeScreen = () => {
   const [ waistGirth, setWaistGirth ] = useState(""); // Обхват талии
   const [ hipsGirth, setHipsGirth ] = useState(""); // Обхват бёдер
   const [ neckGirth, setNeckGirth ] = useState(""); // Обхват шеи
+  const [ email, setEmail ] = useState("");
 
   const handleSubmit = () => {
     alert(`sex: ${sex}, size: ${size}, height: ${height}, chestGirth: ${chestGirth}, waistGirth: ${waistGirth}, hipsGirth: ${hipsGirth}, neckGirth: ${neckGirth}`)
   }
+
+  const showDialog = () => {
+    Alert.alert(
+      'Аккаунт',
+      email,
+      [
+        {text: 'Выйти с аккаунта', onPress: () => logOut()},
+        {
+          text: 'Отмена',
+          style: 'cancel',
+        },
+      ],
+      {cancelable: false},
+    );
+  }
+
+  const logOut = () => {
+    firebase.auth().signOut();
+  }
+
+  useEffect(() => {
+    const { email } = firebase.auth().currentUser;
+    setEmail(email);
+  });
 
   return (
     <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
@@ -27,6 +54,9 @@ const HomeScreen = () => {
         <PageTitle>
           Генерация
         </PageTitle>
+        <Avatar>
+          <Feather.Button onPress={() => showDialog()} name="user" backgroundColor="#0983FE" size={24} borderRadius={50} iconStyle={{margin: 0, padding: 0, marginRight: 0}}></Feather.Button>
+        </Avatar>
           <InputGroupTitle>Ваш пол:</InputGroupTitle>
           <InputGroup>
             <InputRadio first onPress={() => setSex("M")}>
@@ -196,6 +226,15 @@ const InputTextLabel = styled.Text`
   color: #B0B3B8;
   font-size: 16px;
   margin-right: 30px;
+`
+const Avatar = styled.View`
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: -40px;
 `
 
 export default HomeScreen

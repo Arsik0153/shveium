@@ -3,6 +3,7 @@ import styled from 'styled-components/native';
 import { Dimensions, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import ButtonAction from './../src/components/ButtonAction';
 import Link from '../src/components/Link';
+import * as firebase from 'firebase';
 
 const ScreenHeight = Dimensions.get("window").height;
 const ScreenWidth = Dimensions.get("window").width;
@@ -12,14 +13,25 @@ const RegistrationScreen = (props) => {
   const [ email, setEmail ] = useState('');
   const [ password, setPassword ] = useState('');
   const [ isRegister, setIsRegister ] = useState(true);
+  const [ errorMsg, setErrorMsg ] = useState('');
 
-  const onRegisterClick = () => {
-    props.navigation.navigate("Home");
+  const onLoginClick = () => {
+    firebase
+      .auth().signInWithEmailAndPassword(email, password)
+      .catch(error => setErrorMsg(error.message));
   }
 
-  /*useEffect(() => {
-    console.log(registerFormEmail);
-  }, [registerFormEmail]);*/
+  const onRegisterClick = () => {
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(userCredentials => {
+        return userCredentials.user.updateProfile({
+          displayName: email
+        });
+      })
+      .catch(error => setErrorMsg(error.message))
+  }
 
   return (
     <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
@@ -30,6 +42,7 @@ const RegistrationScreen = (props) => {
           <>
           <SectionDescription>Регистрация</SectionDescription>
           <RegistrationForm>
+            <Error>{errorMsg}</Error>
             <Input
               placeholder="E-mail"
               onChangeText={text => setEmail(text)}
@@ -55,6 +68,7 @@ const RegistrationScreen = (props) => {
           <>
           <SectionDescription>Авторизация</SectionDescription>
           <RegistrationForm>
+            <Error>{errorMsg}</Error>
             <Input
               placeholder="E-mail"
               onChangeText={text => setEmail(text)}
@@ -69,7 +83,7 @@ const RegistrationScreen = (props) => {
             />
             <ButtonAction 
               text="Авторизоваться"
-              onPress={() => onRegisterClick()}
+              onPress={() => onLoginClick()}
             />
             <AlreadyLogged>
               Еще не зарегистрированы? {"\n"}
@@ -120,8 +134,12 @@ const Input = styled.TextInput`
   padding: 15px;
   margin-bottom: 15px;
 `
-const Button = styled.Button`
-  
+const Error = styled.Text`
+  color: red;
+  text-align: center;
+  font-size: 13px;
+  margin-top: -10px;
+  margin-bottom: 10px;
 `
 const AlreadyLogged = styled.Text`
   font-size: 12px;
