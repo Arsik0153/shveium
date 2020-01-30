@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
-import { Dimensions, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { Dimensions, TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native';
 import ButtonAction from './../src/components/ButtonAction';
 import Link from '../src/components/Link';
 import * as firebase from 'firebase';
@@ -37,6 +37,7 @@ const RegistrationScreen = (props) => {
     <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
     <FlexedCenter>
       <AppContainer>
+        <StatusBar barStyle="dark-content" />
         <AppLogo>Switcher</AppLogo>
         {isRegister ? (
           <>

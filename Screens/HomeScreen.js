@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components/native';
-import { Dimensions, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
+import { Dimensions, TouchableWithoutFeedback, Keyboard, Alert, StatusBar } from 'react-native';
 import ButtonAction from './../src/components/ButtonAction';
 import { Feather } from '@expo/vector-icons';
 import * as firebase from 'firebase';
@@ -51,6 +51,7 @@ const HomeScreen = () => {
     <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
     <FlexedCenter>
       <AppContainer behavior="position" enabled>
+        <StatusBar barStyle="dark-content" />
         <PageTitle>
           Генерация
         </PageTitle>
@@ -162,7 +163,9 @@ const FlexedCenter = styled.View`
 const AppContainer = styled.KeyboardAvoidingView`
   width: ${ScreenWidth-40}px;
   padding: 0 20px;
-  padding-top: 50px;
+  display: flex;
+  justify-content: center;
+  height: 100%;
 `
 const PageTitle = styled.Text`
   font-weight: bold;
@@ -184,7 +187,7 @@ const InputGroupTitle = styled.Text`
 `
 const InputRadio = styled.TouchableOpacity`
   background: #fff;
-  padding: 15px 10px;
+  padding: 12px 10px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -219,7 +222,7 @@ const DoubleInputTitle = styled.Text`
 const Input = styled.TextInput`
   background: #F2F3F5;
   border-radius: 5px;
-  padding: 15px;
+  padding: 10px 15px;
   width: 60%;
 `
 const InputTextLabel = styled.Text`
